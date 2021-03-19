@@ -14,7 +14,7 @@
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/native": "^5.1.6",
     "@react-navigation/stack": "^5.14.3",
-    "@unform/core": "^2.1.0",
+    "@unform/core": "^2.1.6",
     "@unform/mobile": "^2.1.0",
     "axios": "^0.21.1",
     "react": "16.11.0",

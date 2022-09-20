@@ -39,7 +39,7 @@
     "@types/styled-components": "^5.1.26",
     "@types/yup": "^0.32.0",
     "@typescript-eslint/eslint-plugin": "^5.37.0",
-    "@typescript-eslint/parser": "^5.37.0",
+    "@typescript-eslint/parser": "^5.38.0",
     "babel-jest": "^29.0.2",
     "eslint": "^8.23.1",
     "eslint-config-airbnb": "^19.0.0",

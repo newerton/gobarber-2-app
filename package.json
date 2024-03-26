@@ -13,7 +13,7 @@
     "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/native": "^6.1.17",
-    "@react-navigation/stack": "^6.3.28",
+    "@react-navigation/stack": "^6.3.29",
     "@unform/core": "^2.1.0",
     "@unform/mobile": "^2.1.6",
     "axios": "^1.6.8",

@@ -18,7 +18,7 @@
     "@unform/mobile": "^2.1.6",
     "axios": "^1.9.0",
     "react": "19.1.0",
-    "react-native": "^0.79.3",
+    "react-native": "^0.80.0",
     "react-native-gesture-handler": "^2.25.0",
     "react-native-iphone-x-helper": "^1.2.1",
     "react-native-reanimated": "^3.18.0",

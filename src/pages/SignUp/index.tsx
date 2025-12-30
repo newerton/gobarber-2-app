@@ -1,36 +1,32 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import Icon from 'react-native-vector-icons/Feather';
-import * as Yup from 'yup';
-
 import { useNavigation } from '@react-navigation/native';
+import type { FormHandles } from '@unform/core';
+import { Form } from '@unform/mobile';
+import type React from 'react';
+import { useCallback, useRef } from 'react';
 
 import {
-  View,
+  Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  TextInput,
-  Alert,
+  type TextInput,
+  View,
 } from 'react-native';
-
-import { FormHandles } from '@unform/core';
-import { Form } from '@unform/mobile';
-import api from '../../services/api';
+import Icon from 'react-native-vector-icons/Feather';
+import * as Yup from 'yup';
+import logoImg from '../../assets/logo.png';
+import Button from '../../components/Button';
+import Input from '../../components/Input';
+import { useAuth } from '../../hooks/auth';
+import { useKeyboard } from '../../hooks/keyboard';
 import getValidationErrors from '../../utils/getValidationErrors';
 
-import { useKeyboard } from '../../hooks/keyboard';
-import Input from '../../components/Input';
-import Button from '../../components/Button';
-import { useAuth } from '../../hooks/auth';
-
-import logoImg from '../../assets/logo.png';
-
 import {
+  BackToSignIn,
+  BackToSignInText,
   Container,
   Logo,
   Title,
-  BackToSignIn,
-  BackToSignInText,
 } from './styles';
 
 interface SignInFormData {
@@ -44,7 +40,10 @@ const SignUp: React.FC = () => {
   const emailInputRef = useRef<TextInput>(null);
   const passwordInputRef = useRef<TextInput>(null);
 
-  const navigation = useNavigation();
+  const navigation = useNavigation() as unknown as {
+    navigate: (route: string) => void;
+    goBack: () => void;
+  };
   const isKeyboardVisible = useKeyboard();
 
   const { signUp } = useAuth();

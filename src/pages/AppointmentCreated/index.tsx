@@ -1,15 +1,16 @@
-import React, { useCallback, useMemo } from 'react';
-import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
+import type React from 'react';
+import { useCallback, useMemo } from 'react';
+import Icon from 'react-native-vector-icons/Feather';
 
 import {
   Container,
-  Title,
   Description,
   OkButton,
   OkButtonText,
+  Title,
 } from './styles';
 
 interface RouteParams {
@@ -17,7 +18,9 @@ interface RouteParams {
 }
 
 const AppointmentCreated: React.FC = () => {
-  const { reset } = useNavigation();
+  const { reset } = useNavigation() as unknown as {
+    reset: (state: Record<string, unknown>) => void;
+  };
   const { params } = useRoute();
 
   const routeParams = params as RouteParams;

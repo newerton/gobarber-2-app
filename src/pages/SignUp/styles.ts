@@ -1,5 +1,5 @@
-import styled from 'styled-components/native';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
+import styled from 'styled-components/native';
 
 interface ContainerProps {
   isKeyboardVisible: boolean;

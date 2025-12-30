@@ -1,11 +1,12 @@
-import React, {
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import type React from 'react';
+import {
   createContext,
   useCallback,
-  useState,
   useContext,
   useEffect,
+  useState,
 } from 'react';
-import AsyncStorage from '@react-native-community/async-storage';
 
 import api from '../services/api';
 
@@ -43,7 +44,7 @@ interface AuthContextProps {
 
 const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 
-export const AuthProvider: React.FC = ({ children }) => {
+export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
   const [data, setData] = useState<AuthState>({} as AuthState);
   const [loading, setLoading] = useState(true);
 
@@ -65,7 +66,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     loadStorageData();
   }, []);
 
-  const signIn = useCallback(async ({ email, password }) => {
+  const signIn = useCallback(async ({ email, password }: SignInCredentials) => {
     const response = await api.post('sessions', { email, password });
 
     const { user, token } = response.data;
@@ -80,14 +81,17 @@ export const AuthProvider: React.FC = ({ children }) => {
     setData({ user, token });
   }, []);
 
-  const signUp = useCallback(async ({ name, email, password }) => {
-    await api.post('users', {
-      name,
-      email,
-      password,
-      provider: true,
-    });
-  }, []);
+  const signUp = useCallback(
+    async ({ name, email, password }: SignUpCredentials) => {
+      await api.post('users', {
+        name,
+        email,
+        password,
+        provider: true,
+      });
+    },
+    [],
+  );
 
   const signOut = useCallback(async () => {
     await AsyncStorage.multiRemove(['@GoBarber:user', '@GoBarber:token']);
@@ -104,7 +108,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         user,
       });
     },
-    [setData, data.token],
+    [data.token],
   );
 
   return (

@@ -1,37 +1,37 @@
-import React, { useCallback, useEffect, useState, useMemo } from 'react';
-import { useRoute, useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/Feather';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { format } from 'date-fns';
-
-import { Platform, Alert } from 'react-native';
+import type React from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Alert, Platform } from 'react-native';
+import Icon from 'react-native-vector-icons/Feather';
 import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
 
 import {
-  Container,
-  Header,
   BackButton,
-  HeaderTitle,
-  UserAvatar,
-  Content,
-  ProvidersListContainer,
-  ProvidersList,
-  ProviderContainer,
-  ProviderAvatar,
-  ProviderName,
   Calendar,
-  Title,
-  OpenDatePickerButton,
-  OpenDatePickerButtonText,
-  Schedule,
-  Section,
-  SectionTitle,
-  SectionContent,
-  Hour,
-  HourText,
+  Container,
+  Content,
   CreateAppointmentButton,
   CreateAppointmentButtonText,
+  Header,
+  HeaderTitle,
+  Hour,
+  HourText,
+  OpenDatePickerButton,
+  OpenDatePickerButtonText,
+  ProviderAvatar,
+  ProviderContainer,
+  ProviderName,
+  ProvidersList,
+  ProvidersListContainer,
+  Schedule,
+  Section,
+  SectionContent,
+  SectionTitle,
+  Title,
+  UserAvatar,
 } from './styles';
 
 interface RouteParams {
@@ -52,7 +52,10 @@ interface AvailabilityItem {
 const CreateAppointment: React.FC = () => {
   const { user } = useAuth();
   const route = useRoute();
-  const { goBack, navigate } = useNavigation();
+  const { goBack, navigate } = useNavigation() as unknown as {
+    goBack: () => void;
+    navigate: (route: string, params?: Record<string, unknown>) => void;
+  };
   const routeParams = route.params as RouteParams;
 
   const [availability, setAvailability] = useState<AvailabilityItem[]>([]);
@@ -97,7 +100,7 @@ const CreateAppointment: React.FC = () => {
   }, []);
 
   const handleDateChanged = useCallback(
-    (event: any, date: Date | undefined) => {
+    (_event: unknown, date: Date | undefined) => {
       if (Platform.OS === 'android') {
         setShowDatePicker(false);
       }
@@ -126,7 +129,7 @@ const CreateAppointment: React.FC = () => {
       });
 
       navigate('AppointmentCreated', { date: date.getTime() });
-    } catch (err) {
+    } catch (_err) {
       Alert.alert(
         'Erro ao criar agendamento',
         'Ocorreu um erro ao tentar criar o agendamento tente novamente',
@@ -172,25 +175,38 @@ const CreateAppointment: React.FC = () => {
 
       <Content>
         <ProvidersListContainer>
-          <ProvidersList
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            data={providers}
-            keyExtractor={(provider) => provider.id}
-            renderItem={({ item: provider }) => (
-              <ProviderContainer
-                onPress={() => {
-                  handleSelectProvider(provider.id);
-                }}
-                selected={provider.id === selectedProvider}
-              >
-                <ProviderAvatar source={{ uri: provider.avatar_url }} />
-                <ProviderName selected={provider.id === selectedProvider}>
-                  {provider.name}
-                </ProviderName>
-              </ProviderContainer>
-            )}
-          />
+          {(() => {
+            interface ProvidersListProps {
+              horizontal: boolean;
+              showsHorizontalScrollIndicator: boolean;
+              data: Provider[];
+              keyExtractor: (item: Provider) => string;
+              renderItem: (info: { item: Provider }) => React.ReactElement;
+            }
+
+            const providersListProps: ProvidersListProps = {
+              horizontal: true,
+              showsHorizontalScrollIndicator: false,
+              data: providers,
+              keyExtractor: (provider: Provider) => provider.id,
+              renderItem: ({ item: provider }: { item: Provider }) => (
+                <ProviderContainer
+                  onPress={() => {
+                    handleSelectProvider(provider.id);
+                  }}
+                  selected={provider.id === selectedProvider}
+                >
+                  <ProviderAvatar source={{ uri: provider.avatar_url }} />
+                  <ProviderName selected={provider.id === selectedProvider}>
+                    {provider.name}
+                  </ProviderName>
+                </ProviderContainer>
+              ),
+            };
+
+            // @ts-expect-error - styled FlatList typing conflict
+            return <ProvidersList {...providersListProps} />;
+          })()}
         </ProvidersListContainer>
 
         <Calendar>

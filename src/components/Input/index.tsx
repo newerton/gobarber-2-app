@@ -1,19 +1,20 @@
-import React, {
-  useRef,
-  useState,
-  useEffect,
-  useImperativeHandle,
+import { useField } from '@unform/core';
+import type React from 'react';
+import {
   forwardRef,
   useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
 } from 'react';
-import { TextInputProps } from 'react-native';
-
-import { useField } from '@unform/core';
-import { Container, TextInput, Icon } from './styles';
+import type { TextInput as RNTextInput, TextInputProps } from 'react-native';
+import { Container, Icon, TextInput } from './styles';
 
 interface InputProps extends TextInputProps {
   name: string;
   icon: string;
+  containerStyle?: Record<string, unknown>;
 }
 
 interface InputValueReference {
@@ -23,11 +24,12 @@ interface InputValueReference {
 interface InputRef {
   focus(): void;
 }
-const Input: React.RefForwardingComponent<InputRef, InputProps> = (
-  { name, icon, ...rest },
+const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = (
+  props,
   ref,
 ) => {
-  const inputElementRef = useRef<any>(null);
+  const { name, icon, ...rest } = props;
+  const inputElementRef = useRef<RNTextInput | null>(null);
 
   const { fieldName, defaultValue = '', registerField, error } = useField(name);
   const inputValueRef = useRef<InputValueReference>({ value: defaultValue });
@@ -37,7 +39,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
 
   useImperativeHandle(ref, () => ({
     focus() {
-      inputElementRef.current.focus();
+      inputElementRef.current?.focus();
     },
   }));
   useEffect(() => {
@@ -47,11 +49,11 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
       path: 'value',
       setValue(_, value) {
         inputValueRef.current.value = value;
-        inputElementRef.current.setNativeProps({ text: value });
+        inputElementRef.current?.setNativeProps({ text: value });
       },
       clearValue() {
         inputValueRef.current.value = '';
-        inputElementRef.current.clear();
+        inputElementRef.current?.clear();
       },
     });
   }, [fieldName, registerField]);
@@ -75,7 +77,8 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
       <TextInput
         keyboardAppearance="dark"
         placeholderTextColor="#666360"
-        ref={inputElementRef}
+        // @ts-expect-error - styled-components typing doesn't expose ref properly
+        ref={inputElementRef as unknown}
         defaultValue={defaultValue}
         onFocus={handleInputFocus}
         onBlur={handleInputBlur}

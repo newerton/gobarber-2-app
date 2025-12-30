@@ -1,5 +1,5 @@
-import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import type React from 'react';
 
 import AppointmentCreated from '../pages/AppointmentCreated';
 import CreateAppointment from '../pages/CreateAppointment';

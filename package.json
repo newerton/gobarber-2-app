@@ -13,8 +13,8 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.2.0",
     "@react-native-community/masked-view": "^0.1.10",
-    "@react-navigation/native": "^7.1.26",
-    "@react-navigation/stack": "^7.6.13",
+    "@react-navigation/native": "^7.1.27",
+    "@react-navigation/stack": "^7.6.14",
     "@unform/core": "^2.1.0",
     "@unform/mobile": "^2.1.6",
     "axios": "^1.13.2",
@@ -27,11 +27,11 @@
     "react-native-safe-area-context": "^5.6.2",
     "react-native-screens": "^4.19.0",
     "react-native-vector-icons": "^10.3.0",
-    "styled-components": "^6.2.0",
+    "styled-components": "^6.3.5",
     "yup": "^1.7.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.28.5",
+    "@babel/core": "^7.28.6",
     "@babel/runtime": "^7.28.6",
     "@biomejs/biome": "^2.3.11",
     "@types/jest": "^30.0.0",

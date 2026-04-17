@@ -44,7 +44,7 @@
     "jest": "^30.3.0",
     "metro-react-native-babel-preset": "^0.77.0",
     "react-test-renderer": "19.2.5",
-    "typescript": "^6.0.2"
+    "typescript": "^6.0.3"
   },
   "jest": {
     "preset": "react-native",
